@@ -1,0 +1,84 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/health-maintenance"></ion-back-button>
+    </ion-buttons>
+    <ion-title>{{insuranceId ? 'Editar' : 'Agregar'}} Seguro</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <div class="ion-padding">
+    <form (ngSubmit)="save()">
+      <ion-item>
+        <ion-label position="floating">Tipo de Seguro</ion-label>
+        <ion-input [(ngModel)]="insurance.type" name="type" required></ion-input>
+      </ion-item>
+
+      <ion-item>
+        <ion-label position="floating">Proveedor</ion-label>
+        <ion-input [(ngModel)]="insurance.provider" name="provider" required></ion-input>
+      </ion-item>
+
+      <ion-item>
+        <ion-label position="floating">Fecha de Inicio</ion-label>
+        <ion-datetime-button datetime="startDate"></ion-datetime-button>
+        <ion-modal [keepContentsMounted]="true">
+          <ng-template>
+            <ion-datetime 
+              id="startDate" 
+              [(ngModel)]="insurance.startDate" 
+              name="startDate"
+              presentation="date">
+            </ion-datetime>
+          </ng-template>
+        </ion-modal>
+      </ion-item>
+
+      <ion-item>
+        <ion-label position="floating">Fecha de Vencimiento</ion-label>
+        <ion-datetime-button datetime="expiryDate"></ion-datetime-button>
+        <ion-modal [keepContentsMounted]="true">
+          <ng-template>
+            <ion-datetime 
+              id="expiryDate" 
+              [(ngModel)]="insurance.expiryDate" 
+              name="expiryDate"
+              presentation="date">
+            </ion-datetime>
+          </ng-template>
+        </ion-modal>
+      </ion-item>
+
+      <ion-item>
+        <ion-label position="floating">Costo (opcional)</ion-label>
+        <ion-input type="number" [(ngModel)]="insurance.cost" name="cost"></ion-input>
+      </ion-item>
+
+      <ion-item>
+        <ion-label position="floating">Notas de Cobertura</ion-label>
+        <ion-textarea [(ngModel)]="insurance.coverageNotes" name="coverageNotes" rows="4"></ion-textarea>
+      </ion-item>
+
+      <ion-item>
+        <ion-label position="stacked">Adjuntar Archivos/Fotos</ion-label>
+        <input type="file" (change)="onFileSelected($event)" multiple accept="image/*,.pdf,.doc,.docx" class="ion-margin-top">
+      </ion-item>
+
+      <ion-list *ngIf="insurance.attachments && insurance.attachments.length > 0">
+        <ion-item *ngFor="let attachment of insurance.attachments; let i = index">
+          <ion-label>
+            <p>{{attachment.name}}</p>
+          </ion-label>
+          <ion-button slot="end" fill="clear" color="danger" (click)="removeAttachment(i)">
+            <ion-icon name="close-circle-outline"></ion-icon>
+          </ion-button>
+        </ion-item>
+      </ion-list>
+
+      <ion-button expand="block" type="submit" class="ion-margin-top">
+        Guardar
+      </ion-button>
+    </form>
+  </div>
+</ion-content>

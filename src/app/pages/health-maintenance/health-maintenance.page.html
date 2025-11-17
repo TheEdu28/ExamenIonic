@@ -1,0 +1,120 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/dashboard"></ion-back-button>
+    </ion-buttons>
+    <ion-title>Salud Personal</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <div class="ion-padding">
+    <ion-segment [(ngModel)]="selectedSegment">
+      <ion-segment-button value="insurances">
+        <ion-label>Seguros</ion-label>
+      </ion-segment-button>
+      <ion-segment-button value="studies">
+        <ion-label>Estudios</ion-label>
+      </ion-segment-button>
+      <ion-segment-button value="reminders">
+        <ion-label>Recordatorios</ion-label>
+      </ion-segment-button>
+    </ion-segment>
+
+    <!-- Seguros -->
+    <div *ngIf="selectedSegment === 'insurances'">
+      <ion-button expand="block" (click)="addInsurance()" class="ion-margin-top">
+        <ion-icon slot="start" name="add-outline"></ion-icon>
+        Agregar Seguro
+      </ion-button>
+
+      <ion-list>
+        <ion-item-sliding *ngFor="let insurance of insurances">
+          <ion-item button (click)="viewInsurance(insurance.id)">
+            <ion-label>
+              <h2>{{insurance.type}}</h2>
+              <p>Proveedor: {{insurance.provider}}</p>
+              <p>Vence: {{insurance.expiryDate | date:'short'}}</p>
+            </ion-label>
+          </ion-item>
+
+          <ion-item-options>
+            <ion-item-option color="danger" (click)="deleteInsurance(insurance.id)">
+              <ion-icon slot="icon-only" name="trash-outline"></ion-icon>
+            </ion-item-option>
+          </ion-item-options>
+        </ion-item-sliding>
+      </ion-list>
+
+      <ion-card *ngIf="insurances.length === 0">
+        <ion-card-content>
+          <p class="ion-text-center">No hay seguros registrados</p>
+        </ion-card-content>
+      </ion-card>
+    </div>
+
+    <!-- Estudios Médicos -->
+    <div *ngIf="selectedSegment === 'studies'">
+      <ion-button expand="block" (click)="addStudy()" class="ion-margin-top">
+        <ion-icon slot="start" name="add-outline"></ion-icon>
+        Agregar Estudio
+      </ion-button>
+
+      <ion-list>
+        <ion-item-sliding *ngFor="let study of studies">
+          <ion-item button (click)="viewStudy(study.id)">
+            <ion-label>
+              <h2>{{study.studyType}}</h2>
+              <p>Fecha: {{study.datePerformed | date:'short'}}</p>
+              <p *ngIf="study.doctor">Doctor: {{study.doctor}}</p>
+            </ion-label>
+          </ion-item>
+
+          <ion-item-options>
+            <ion-item-option color="danger" (click)="deleteStudy(study.id)">
+              <ion-icon slot="icon-only" name="trash-outline"></ion-icon>
+            </ion-item-option>
+          </ion-item-options>
+        </ion-item-sliding>
+      </ion-list>
+
+      <ion-card *ngIf="studies.length === 0">
+        <ion-card-content>
+          <p class="ion-text-center">No hay estudios registrados</p>
+        </ion-card-content>
+      </ion-card>
+    </div>
+
+    <!-- Recordatorios -->
+    <div *ngIf="selectedSegment === 'reminders'">
+      <ion-button expand="block" (click)="addReminder()" class="ion-margin-top">
+        <ion-icon slot="start" name="add-outline"></ion-icon>
+        Agregar Recordatorio
+      </ion-button>
+
+      <ion-list>
+        <ion-item-sliding *ngFor="let reminder of reminders">
+          <ion-item>
+            <ion-label>
+              <h2>{{reminder.title}}</h2>
+              <p>{{reminder.description}}</p>
+              <p>Fecha: {{reminder.dueDate | date:'short'}}</p>
+            </ion-label>
+          </ion-item>
+
+          <ion-item-options>
+            <ion-item-option color="danger" (click)="deleteReminder(reminder.id)">
+              <ion-icon slot="icon-only" name="trash-outline"></ion-icon>
+            </ion-item-option>
+          </ion-item-options>
+        </ion-item-sliding>
+      </ion-list>
+
+      <ion-card *ngIf="reminders.length === 0">
+        <ion-card-content>
+          <p class="ion-text-center">No hay recordatorios</p>
+        </ion-card-content>
+      </ion-card>
+    </div>
+  </div>
+</ion-content>

@@ -1,0 +1,83 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/house-maintenance"></ion-back-button>
+    </ion-buttons>
+    <ion-title>Detalle de Mantenimiento</ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="edit()">
+        <ion-icon name="create-outline"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <div class="ion-padding" *ngIf="maintenance">
+    <ion-card>
+      <ion-card-header>
+        <ion-card-title>{{maintenance.description}}</ion-card-title>
+      </ion-card-header>
+
+      <ion-card-content>
+        <ion-list>
+          <ion-item>
+            <ion-label>
+              <h3>Fecha Programada</h3>
+              <p>{{maintenance.scheduledDate | date:'medium'}}</p>
+            </ion-label>
+          </ion-item>
+
+          <ion-item>
+            <ion-label>
+              <h3>Frecuencia</h3>
+              <p>{{getFrequencyLabel(maintenance.frequency)}}</p>
+            </ion-label>
+          </ion-item>
+
+          <ion-item>
+            <ion-label>
+              <h3>Estado</h3>
+              <p>{{getStatusLabel(maintenance.status)}}</p>
+            </ion-label>
+          </ion-item>
+
+          <ion-item>
+            <ion-label>
+              <h3>Prioridad</h3>
+              <p>{{getPriorityLabel(maintenance.priority)}}</p>
+            </ion-label>
+          </ion-item>
+
+          <ion-item *ngIf="maintenance.cost">
+            <ion-label>
+              <h3>Costo</h3>
+              <p>${{maintenance.cost}}</p>
+            </ion-label>
+          </ion-item>
+
+          <ion-item *ngIf="maintenance.notes">
+            <ion-label>
+              <h3>Notas</h3>
+              <p>{{maintenance.notes}}</p>
+            </ion-label>
+          </ion-item>
+
+          <ion-item>
+            <ion-label>
+              <h3>Creado</h3>
+              <p>{{maintenance.createdAt | date:'medium'}}</p>
+            </ion-label>
+          </ion-item>
+
+          <ion-item>
+            <ion-label>
+              <h3>Última Actualización</h3>
+              <p>{{maintenance.updatedAt | date:'medium'}}</p>
+            </ion-label>
+          </ion-item>
+        </ion-list>
+      </ion-card-content>
+    </ion-card>
+  </div>
+</ion-content>

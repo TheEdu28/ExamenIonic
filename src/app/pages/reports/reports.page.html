@@ -1,0 +1,129 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/dashboard"></ion-back-button>
+    </ion-buttons>
+    <ion-title>Informes</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <div class="ion-padding">
+    <ion-card>
+      <ion-card-header>
+        <ion-card-title>Generar Informe</ion-card-title>
+      </ion-card-header>
+
+      <ion-card-content>
+        <ion-item>
+          <ion-label>Categoría</ion-label>
+          <ion-select [(ngModel)]="selectedCategory">
+            <ion-select-option value="house">Casa</ion-select-option>
+            <ion-select-option value="vehicle">Vehículos</ion-select-option>
+            <ion-select-option value="health">Salud</ion-select-option>
+            <ion-select-option value="pet">Mascotas</ion-select-option>
+          </ion-select>
+        </ion-item>
+
+        <ion-item>
+          <ion-label position="floating">Fecha Desde</ion-label>
+          <ion-datetime-button datetime="fromDate"></ion-datetime-button>
+          <ion-modal [keepContentsMounted]="true">
+            <ng-template>
+              <ion-datetime 
+                id="fromDate" 
+                [(ngModel)]="fromDate" 
+                presentation="date">
+              </ion-datetime>
+            </ng-template>
+          </ion-modal>
+        </ion-item>
+
+        <ion-item>
+          <ion-label position="floating">Fecha Hasta</ion-label>
+          <ion-datetime-button datetime="toDate"></ion-datetime-button>
+          <ion-modal [keepContentsMounted]="true">
+            <ng-template>
+              <ion-datetime 
+                id="toDate" 
+                [(ngModel)]="toDate" 
+                presentation="date">
+              </ion-datetime>
+            </ng-template>
+          </ion-modal>
+        </ion-item>
+
+        <ion-button expand="block" (click)="generateReport()" class="ion-margin-top">
+          Generar Informe
+        </ion-button>
+      </ion-card-content>
+    </ion-card>
+
+    <ion-card *ngIf="report">
+      <ion-card-header>
+        <ion-card-title>Resultados del Informe</ion-card-title>
+        <ion-card-subtitle>{{getCategoryLabel(report.category)}}</ion-card-subtitle>
+      </ion-card-header>
+
+      <ion-card-content>
+        <ion-list>
+          <ion-item>
+            <ion-label>
+              <h3>Período</h3>
+              <p>{{report.dateRange.from | date:'short'}} - {{report.dateRange.to | date:'short'}}</p>
+            </ion-label>
+          </ion-item>
+
+          <ion-item>
+            <ion-label>
+              <h3>Costo Total</h3>
+              <p>${{report.totalCost}}</p>
+            </ion-label>
+          </ion-item>
+
+          <ion-item>
+            <ion-label>
+              <h3>Completados</h3>
+              <p>{{report.completedCount}}</p>
+            </ion-label>
+          </ion-item>
+
+          <ion-item>
+            <ion-label>
+              <h3>Pendientes</h3>
+              <p>{{report.pendingCount}}</p>
+            </ion-label>
+          </ion-item>
+        </ion-list>
+      </ion-card-content>
+    </ion-card>
+
+    <ion-button expand="block" (click)="generateAllReports()" *ngIf="!allReports">
+      Ver Todos los Informes
+    </ion-button>
+
+    <div *ngIf="allReports && allReports.length > 0">
+      <ion-card *ngFor="let rep of allReports">
+        <ion-card-header>
+          <ion-card-title>{{getCategoryLabel(rep.category)}}</ion-card-title>
+        </ion-card-header>
+
+        <ion-card-content>
+          <p>Costo Total: ${{rep.totalCost}}</p>
+          <p>Completados: {{rep.completedCount}}</p>
+          <p>Pendientes: {{rep.pendingCount}}</p>
+        </ion-card-content>
+      </ion-card>
+
+      <ion-card>
+        <ion-card-header>
+          <ion-card-title>Total General</ion-card-title>
+        </ion-card-header>
+
+        <ion-card-content>
+          <h2>${{getTotalCost()}}</h2>
+        </ion-card-content>
+      </ion-card>
+    </div>
+  </div>
+</ion-content>

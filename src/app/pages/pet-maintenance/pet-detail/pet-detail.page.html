@@ -1,0 +1,119 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/pet-maintenance"></ion-back-button>
+    </ion-buttons>
+    <ion-title>Detalle de Mascota</ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="edit()">
+        <ion-icon name="create-outline"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <div class="ion-padding" *ngIf="petMaintenance">
+    <ion-card>
+      <ion-card-header>
+        <ion-card-title>{{petMaintenance.pet.name}}</ion-card-title>
+        <ion-card-subtitle>{{petMaintenance.pet.type}} - {{petMaintenance.pet.breed}}</ion-card-subtitle>
+      </ion-card-header>
+
+      <ion-card-content>
+        <ion-list>
+          <ion-item *ngIf="petMaintenance.pet.birthDate">
+            <ion-label>
+              <h3>Fecha de Nacimiento</h3>
+              <p>{{petMaintenance.pet.birthDate | date:'medium'}}</p>
+            </ion-label>
+          </ion-item>
+
+          <ion-item *ngIf="petMaintenance.feedingSchedule">
+            <ion-label>
+              <h3>Horario de Alimentación</h3>
+              <p>{{petMaintenance.feedingSchedule}}</p>
+            </ion-label>
+          </ion-item>
+
+          <ion-item *ngIf="petMaintenance.specialCare">
+            <ion-label>
+              <h3>Cuidados Especiales</h3>
+              <p>{{petMaintenance.specialCare}}</p>
+            </ion-label>
+          </ion-item>
+        </ion-list>
+      </ion-card-content>
+    </ion-card>
+
+    <ion-card>
+      <ion-card-header>
+        <ion-card-title>Vacunas</ion-card-title>
+      </ion-card-header>
+
+      <ion-card-content>
+        <ion-list>
+          <ion-item *ngFor="let vaccine of petMaintenance.vaccines">
+            <ion-label>
+              <h3>{{vaccine.name}}</h3>
+              <p>Aplicada: {{vaccine.applicationDate | date:'short'}}</p>
+              <p *ngIf="vaccine.nextApplicationDate">Próxima: {{vaccine.nextApplicationDate | date:'short'}}</p>
+            </ion-label>
+          </ion-item>
+        </ion-list>
+
+        <ion-button expand="block" (click)="addVaccine()">
+          <ion-icon slot="start" name="add-outline"></ion-icon>
+          Agregar Vacuna
+        </ion-button>
+      </ion-card-content>
+    </ion-card>
+
+    <ion-card>
+      <ion-card-header>
+        <ion-card-title>Citas Veterinarias</ion-card-title>
+      </ion-card-header>
+
+      <ion-card-content>
+        <ion-list>
+          <ion-item *ngFor="let appointment of petMaintenance.vetAppointments">
+            <ion-label>
+              <h3>{{appointment.reason}}</h3>
+              <p>Fecha: {{appointment.date | date:'short'}}</p>
+              <p>Veterinario: {{appointment.veterinarian}}</p>
+              <p *ngIf="appointment.cost">Costo: ${{appointment.cost}}</p>
+            </ion-label>
+          </ion-item>
+        </ion-list>
+
+        <ion-button expand="block" (click)="addAppointment()">
+          <ion-icon slot="start" name="add-outline"></ion-icon>
+          Agregar Cita
+        </ion-button>
+      </ion-card-content>
+    </ion-card>
+
+    <ion-card>
+      <ion-card-header>
+        <ion-card-title>Recordatorios</ion-card-title>
+      </ion-card-header>
+
+      <ion-card-content>
+        <ion-list>
+          <ion-item *ngFor="let reminder of petMaintenance.reminders">
+            <ion-label>
+              <h3>{{reminder.title}}</h3>
+              <p>{{reminder.description}}</p>
+              <p>{{reminder.dueDate | date:'short'}}</p>
+            </ion-label>
+          </ion-item>
+        </ion-list>
+
+        <ion-button expand="block" (click)="addReminder()">
+          <ion-icon slot="start" name="add-outline"></ion-icon>
+          Agregar Recordatorio
+        </ion-button>
+      </ion-card-content>
+    </ion-card>
+  </div>
+</ion-content>

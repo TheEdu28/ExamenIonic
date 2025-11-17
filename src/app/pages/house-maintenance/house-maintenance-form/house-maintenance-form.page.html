@@ -1,0 +1,93 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/house-maintenance"></ion-back-button>
+    </ion-buttons>
+    <ion-title>Agregar Mantenimiento de Casa</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <div class="ion-padding">
+    <form (ngSubmit)="save()">
+      <ion-item>
+        <ion-label position="floating">Descripción</ion-label>
+        <ion-input [(ngModel)]="maintenance.description" name="description" required></ion-input>
+      </ion-item>
+
+      <ion-item>
+        <ion-label position="floating">Fecha Programada</ion-label>
+        <ion-datetime-button datetime="scheduledDate"></ion-datetime-button>
+        <ion-modal [keepContentsMounted]="true">
+          <ng-template>
+            <ion-datetime 
+              id="scheduledDate" 
+              [(ngModel)]="maintenance.scheduledDate" 
+              name="scheduledDate"
+              presentation="date-time">
+            </ion-datetime>
+          </ng-template>
+        </ion-modal>
+      </ion-item>
+
+      <ion-item>
+        <ion-label>Frecuencia</ion-label>
+        <ion-select [(ngModel)]="maintenance.frequency" name="frequency">
+          <ion-select-option value="daily">Diaria</ion-select-option>
+          <ion-select-option value="weekly">Semanal</ion-select-option>
+          <ion-select-option value="monthly">Mensual</ion-select-option>
+          <ion-select-option value="yearly">Anual</ion-select-option>
+          <ion-select-option value="one_time">Una vez</ion-select-option>
+        </ion-select>
+      </ion-item>
+
+      <ion-item>
+        <ion-label>Estado</ion-label>
+        <ion-select [(ngModel)]="maintenance.status" name="status">
+          <ion-select-option value="pending">Pendiente</ion-select-option>
+          <ion-select-option value="in_progress">En Progreso</ion-select-option>
+          <ion-select-option value="completed">Completado</ion-select-option>
+        </ion-select>
+      </ion-item>
+
+      <ion-item>
+        <ion-label>Prioridad</ion-label>
+        <ion-select [(ngModel)]="maintenance.priority" name="priority">
+          <ion-select-option value="low">Baja</ion-select-option>
+          <ion-select-option value="medium">Media</ion-select-option>
+          <ion-select-option value="high">Alta</ion-select-option>
+        </ion-select>
+      </ion-item>
+
+      <ion-item>
+        <ion-label position="floating">Costo (opcional)</ion-label>
+        <ion-input type="number" [(ngModel)]="maintenance.cost" name="cost"></ion-input>
+      </ion-item>
+
+      <ion-item>
+        <ion-label position="floating">Notas</ion-label>
+        <ion-textarea [(ngModel)]="maintenance.notes" name="notes" rows="4"></ion-textarea>
+      </ion-item>
+
+      <ion-item>
+        <ion-label position="stacked">Adjuntar Archivos/Fotos</ion-label>
+        <input type="file" (change)="onFileSelected($event)" multiple accept="image/*,.pdf,.doc,.docx" class="ion-margin-top">
+      </ion-item>
+
+      <ion-list *ngIf="maintenance.attachments && maintenance.attachments.length > 0">
+        <ion-item *ngFor="let attachment of maintenance.attachments; let i = index">
+          <ion-label>
+            <p>{{attachment.name}}</p>
+          </ion-label>
+          <ion-button slot="end" fill="clear" color="danger" (click)="removeAttachment(i)">
+            <ion-icon name="close-circle-outline"></ion-icon>
+          </ion-button>
+        </ion-item>
+      </ion-list>
+
+      <ion-button expand="block" type="submit" class="ion-margin-top">
+        Guardar
+      </ion-button>
+    </form>
+  </div>
+</ion-content>

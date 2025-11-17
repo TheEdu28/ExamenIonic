@@ -1,0 +1,153 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/vehicle-maintenance"></ion-back-button>
+    </ion-buttons>
+    <ion-title>{{maintenanceId ? 'Editar' : 'Agregar'}} Mantenimiento</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <div class="ion-padding">
+    <form (ngSubmit)="save()">
+      <ion-item>
+        <ion-label position="floating">Nombre del Vehículo</ion-label>
+        <ion-input [(ngModel)]="maintenance.vehicleName" name="vehicleName" required></ion-input>
+      </ion-item>
+
+      <ion-item>
+        <ion-label position="floating">Descripción del Servicio</ion-label>
+        <ion-input [(ngModel)]="maintenance.serviceDescription" name="serviceDescription" required></ion-input>
+      </ion-item>
+
+      <ion-item>
+        <ion-label position="floating">Fecha de Mantenimiento</ion-label>
+        <ion-datetime-button datetime="maintenanceDate"></ion-datetime-button>
+        <ion-modal [keepContentsMounted]="true">
+          <ng-template>
+            <ion-datetime 
+              id="maintenanceDate" 
+              [(ngModel)]="maintenance.maintenanceDate" 
+              name="maintenanceDate"
+              presentation="date">
+            </ion-datetime>
+          </ng-template>
+        </ion-modal>
+      </ion-item>
+
+      <ion-item>
+        <ion-label position="floating">Próxima Fecha (opcional)</ion-label>
+        <ion-datetime-button datetime="nextMaintenanceDate"></ion-datetime-button>
+        <ion-modal [keepContentsMounted]="true">
+          <ng-template>
+            <ion-datetime 
+              id="nextMaintenanceDate" 
+              [(ngModel)]="maintenance.nextMaintenanceDate" 
+              name="nextMaintenanceDate"
+              presentation="date">
+            </ion-datetime>
+          </ng-template>
+        </ion-modal>
+      </ion-item>
+
+      <ion-item>
+        <ion-label position="floating">Kilometraje Actual</ion-label>
+        <ion-input type="number" [(ngModel)]="maintenance.currentMileage" name="currentMileage" required></ion-input>
+      </ion-item>
+
+      <ion-item>
+        <ion-label position="floating">Costo</ion-label>
+        <ion-input type="number" [(ngModel)]="maintenance.cost" name="cost" required></ion-input>
+      </ion-item>
+
+      <ion-item>
+        <ion-label>Estado</ion-label>
+        <ion-select [(ngModel)]="maintenance.status" name="status">
+          <ion-select-option value="pending">Pendiente</ion-select-option>
+          <ion-select-option value="in_progress">En Progreso</ion-select-option>
+          <ion-select-option value="completed">Completado</ion-select-option>
+        </ion-select>
+      </ion-item>
+
+      <ion-item>
+        <ion-label>Prioridad</ion-label>
+        <ion-select [(ngModel)]="maintenance.priority" name="priority">
+          <ion-select-option value="low">Baja</ion-select-option>
+          <ion-select-option value="medium">Media</ion-select-option>
+          <ion-select-option value="high">Alta</ion-select-option>
+        </ion-select>
+      </ion-item>
+
+      <ion-item>
+        <ion-label position="floating">Vencimiento Seguro (opcional)</ion-label>
+        <ion-datetime-button datetime="insuranceExpiryDate"></ion-datetime-button>
+        <ion-modal [keepContentsMounted]="true">
+          <ng-template>
+            <ion-datetime 
+              id="insuranceExpiryDate" 
+              [(ngModel)]="maintenance.insuranceExpiryDate" 
+              name="insuranceExpiryDate"
+              presentation="date">
+            </ion-datetime>
+          </ng-template>
+        </ion-modal>
+      </ion-item>
+
+      <ion-item>
+        <ion-label position="floating">Revisión Técnica (opcional)</ion-label>
+        <ion-datetime-button datetime="technicalInspectionDate"></ion-datetime-button>
+        <ion-modal [keepContentsMounted]="true">
+          <ng-template>
+            <ion-datetime 
+              id="technicalInspectionDate" 
+              [(ngModel)]="maintenance.technicalInspectionDate" 
+              name="technicalInspectionDate"
+              presentation="date">
+            </ion-datetime>
+          </ng-template>
+        </ion-modal>
+      </ion-item>
+
+      <ion-item>
+        <ion-label position="floating">Notas</ion-label>
+        <ion-textarea [(ngModel)]="maintenance.notes" name="notes" rows="4"></ion-textarea>
+      </ion-item>
+
+      <ion-card class="ion-margin-top">
+        <ion-card-header>
+          <ion-card-subtitle>Alertas y Recordatorios</ion-card-subtitle>
+        </ion-card-header>
+        <ion-card-content>
+          <ion-item>
+            <ion-label>Activar Alerta de Seguro</ion-label>
+            <ion-toggle [(ngModel)]="insuranceAlertEnabled" name="insuranceAlert"></ion-toggle>
+          </ion-item>
+          <ion-item>
+            <ion-label>Activar Alerta de Revisión Técnica</ion-label>
+            <ion-toggle [(ngModel)]="technicalAlertEnabled" name="technicalAlert"></ion-toggle>
+          </ion-item>
+        </ion-card-content>
+      </ion-card>
+
+      <ion-item>
+        <ion-label position="stacked">Adjuntar Archivos/Fotos</ion-label>
+        <input type="file" (change)="onFileSelected($event)" multiple accept="image/*,.pdf,.doc,.docx" class="ion-margin-top">
+      </ion-item>
+
+      <ion-list *ngIf="maintenance.attachments && maintenance.attachments.length > 0">
+        <ion-item *ngFor="let attachment of maintenance.attachments; let i = index">
+          <ion-label>
+            <p>{{attachment.name}}</p>
+          </ion-label>
+          <ion-button slot="end" fill="clear" color="danger" (click)="removeAttachment(i)">
+            <ion-icon name="close-circle-outline"></ion-icon>
+          </ion-button>
+        </ion-item>
+      </ion-list>
+
+      <ion-button expand="block" type="submit" class="ion-margin-top">
+        Guardar
+      </ion-button>
+    </form>
+  </div>
+</ion-content>

@@ -1,0 +1,96 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/health-maintenance"></ion-back-button>
+    </ion-buttons>
+    <ion-title>{{studyId ? 'Editar' : 'Agregar'}} Estudio</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <div class="ion-padding">
+    <form (ngSubmit)="save()">
+      <ion-item>
+        <ion-label position="floating">Tipo de Estudio</ion-label>
+        <ion-input [(ngModel)]="study.studyType" name="studyType" required></ion-input>
+      </ion-item>
+
+      <ion-item>
+        <ion-label position="floating">Fecha de Realización</ion-label>
+        <ion-datetime-button datetime="datePerformed"></ion-datetime-button>
+        <ion-modal [keepContentsMounted]="true">
+          <ng-template>
+            <ion-datetime 
+              id="datePerformed" 
+              [(ngModel)]="study.datePerformed" 
+              name="datePerformed"
+              presentation="date">
+            </ion-datetime>
+          </ng-template>
+        </ion-modal>
+      </ion-item>
+
+      <ion-item>
+        <ion-label position="floating">Resultados</ion-label>
+        <ion-textarea [(ngModel)]="study.results" name="results" rows="4" required></ion-textarea>
+      </ion-item>
+
+      <ion-item>
+        <ion-label position="floating">Próxima Cita (opcional)</ion-label>
+        <ion-datetime-button datetime="nextAppointment"></ion-datetime-button>
+        <ion-modal [keepContentsMounted]="true">
+          <ng-template>
+            <ion-datetime 
+              id="nextAppointment" 
+              [(ngModel)]="study.nextAppointment" 
+              name="nextAppointment"
+              presentation="date">
+            </ion-datetime>
+          </ng-template>
+        </ion-modal>
+      </ion-item>
+
+      <ion-item>
+        <ion-label position="floating">Doctor (opcional)</ion-label>
+        <ion-input [(ngModel)]="study.doctor" name="doctor"></ion-input>
+      </ion-item>
+
+      <ion-item>
+        <ion-label position="floating">Costo (opcional)</ion-label>
+        <ion-input type="number" [(ngModel)]="study.cost" name="cost"></ion-input>
+      </ion-item>
+
+      <ion-item>
+        <ion-label position="stacked">Adjuntar Archivos/Fotos</ion-label>
+        <input type="file" (change)="onFileSelected($event)" multiple accept="image/*,.pdf,.doc,.docx" class="ion-margin-top">
+      </ion-item>
+
+      <ion-list *ngIf="study.attachments && study.attachments.length > 0">
+        <ion-item *ngFor="let attachment of study.attachments; let i = index">
+          <ion-label>
+            <p>{{attachment.name}}</p>
+          </ion-label>
+          <ion-button slot="end" fill="clear" color="danger" (click)="removeAttachment(i)">
+            <ion-icon name="close-circle-outline"></ion-icon>
+          </ion-button>
+        </ion-item>
+      </ion-list>
+
+      <ion-card class="ion-margin-top">
+        <ion-card-header>
+          <ion-card-subtitle>Recordatorios de Chequeo</ion-card-subtitle>
+        </ion-card-header>
+        <ion-card-content>
+          <ion-item>
+            <ion-label>Establecer Recordatorio</ion-label>
+            <ion-toggle [(ngModel)]="reminderEnabled" name="reminder"></ion-toggle>
+          </ion-item>
+        </ion-card-content>
+      </ion-card>
+
+      <ion-button expand="block" type="submit" class="ion-margin-top">
+        Guardar
+      </ion-button>
+    </form>
+  </div>
+</ion-content>

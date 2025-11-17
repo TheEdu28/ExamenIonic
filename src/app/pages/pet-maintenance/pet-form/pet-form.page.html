@@ -1,0 +1,58 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/pet-maintenance"></ion-back-button>
+    </ion-buttons>
+    <ion-title>{{petId ? 'Editar' : 'Agregar'}} Mascota</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <div class="ion-padding">
+    <form (ngSubmit)="save()">
+      <ion-item>
+        <ion-label position="floating">Nombre</ion-label>
+        <ion-input [(ngModel)]="petData.pet.name" name="name" required></ion-input>
+      </ion-item>
+
+      <ion-item>
+        <ion-label position="floating">Tipo</ion-label>
+        <ion-input [(ngModel)]="petData.pet.type" name="type" required></ion-input>
+      </ion-item>
+
+      <ion-item>
+        <ion-label position="floating">Raza</ion-label>
+        <ion-input [(ngModel)]="petData.pet.breed" name="breed" required></ion-input>
+      </ion-item>
+
+      <ion-item>
+        <ion-label position="floating">Fecha de Nacimiento (opcional)</ion-label>
+        <ion-datetime-button datetime="birthDate"></ion-datetime-button>
+        <ion-modal [keepContentsMounted]="true">
+          <ng-template>
+            <ion-datetime 
+              id="birthDate" 
+              [(ngModel)]="petData.pet.birthDate" 
+              name="birthDate"
+              presentation="date">
+            </ion-datetime>
+          </ng-template>
+        </ion-modal>
+      </ion-item>
+
+      <ion-item>
+        <ion-label position="floating">Horario de Alimentación</ion-label>
+        <ion-textarea [(ngModel)]="petData.feedingSchedule" name="feedingSchedule" rows="3"></ion-textarea>
+      </ion-item>
+
+      <ion-item>
+        <ion-label position="floating">Cuidados Especiales</ion-label>
+        <ion-textarea [(ngModel)]="petData.specialCare" name="specialCare" rows="3"></ion-textarea>
+      </ion-item>
+
+      <ion-button expand="block" type="submit" class="ion-margin-top">
+        Guardar
+      </ion-button>
+    </form>
+  </div>
+</ion-content>
