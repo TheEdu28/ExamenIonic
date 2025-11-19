@@ -1,0 +1,43 @@
+// src/app/pages/notifications/notifications.page.scss
+
+.unread {
+  background-color: var(--ion-color-light);
+
+  .bold {
+    font-weight: bold;
+  }
+}
+
+.date-info {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-top: 0.5rem;
+
+  .date {
+    font-size: 0.8rem;
+    color: var(--ion-color-medium);
+  }
+}
+
+ion-chip {
+  font-size: 0.7rem;
+  height: 20px;
+  margin: 0;
+}
+
+.empty-state {
+  text-align: center;
+  padding: 3rem 1rem;
+
+  ion-icon {
+    font-size: 5rem;
+    margin-bottom: 1rem;
+    opacity: 0.5;
+  }
+
+  p {
+    color: var(--ion-color-medium);
+    font-size: 1.1rem;
+  }
+}

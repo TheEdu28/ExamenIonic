@@ -1,3 +1,4 @@
+// src/app/app.routes.ts
 import { Routes } from '@angular/router';
 
 export const routes: Routes = [
@@ -80,7 +81,11 @@ export const routes: Routes = [
   },
   {
     path: 'health-maintenance/reminder/add',
-    loadComponent: () => import('./pages/health-maintenance/health-maintenance.page').then((m) => m.HealthMaintenancePage),
+    loadComponent: () => import('./pages/health-maintenance/reminder-form/reminder-form.page').then((m) => m.ReminderFormPage),
+  },
+  {
+    path: 'health-maintenance/reminder/edit/:id',
+    loadComponent: () => import('./pages/health-maintenance/reminder-form/reminder-form.page').then((m) => m.ReminderFormPage),
   },
   {
     path: 'pet-maintenance',
@@ -109,5 +114,9 @@ export const routes: Routes = [
   {
     path: 'home',
     loadComponent: () => import('./home/home.page').then((m) => m.HomePage),
+  },
+  {
+    path: 'notifications',
+    loadComponent: () => import('./pages/notifications/notifications.page').then((m) => m.NotificationsPage),
   },
 ];

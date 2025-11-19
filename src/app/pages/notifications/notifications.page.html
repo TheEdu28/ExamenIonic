@@ -1,0 +1,59 @@
+<!-- src/app/pages/notifications/notifications.page.html -->
+<ion-header>
+  <ion-toolbar color="primary">
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/dashboard"></ion-back-button>
+    </ion-buttons>
+    <ion-title>Notificaciones</ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="markAllAsRead()" *ngIf="notifications.length > 0">
+        <ion-icon name="checkmark-done-outline"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <div class="ion-padding">
+    <!-- Acciones rápidas -->
+    <ion-button expand="block" fill="outline" color="danger" (click)="clearAll()" *ngIf="notifications.length > 0">
+      <ion-icon slot="start" name="trash-outline"></ion-icon>
+      Eliminar Todas
+    </ion-button>
+
+    <!-- Lista de notificaciones -->
+    <ion-list *ngIf="notifications.length > 0">
+      <ion-item-sliding *ngFor="let notification of notifications">
+        <ion-item [class.unread]="!notification.read" button (click)="markAsRead(notification.id)">
+          <ion-label>
+            <h2 [class.bold]="!notification.read">{{notification.title}}</h2>
+            <p>{{notification.message}}</p>
+            <p class="date-info">
+              <ion-chip [color]="getNotificationColor(notification)" size="small">
+                {{notification.category}}
+              </ion-chip>
+              <span class="date">{{notification.date | date:'short'}}</span>
+            </p>
+          </ion-label>
+          <ion-badge slot="end" color="primary" *ngIf="!notification.read">Nuevo</ion-badge>
+        </ion-item>
+
+        <ion-item-options>
+          <ion-item-option color="danger" (click)="deleteNotification(notification.id)">
+            <ion-icon slot="icon-only" name="trash-outline"></ion-icon>
+          </ion-item-option>
+        </ion-item-options>
+      </ion-item-sliding>
+    </ion-list>
+
+    <!-- Estado vacío -->
+    <ion-card *ngIf="notifications.length === 0">
+      <ion-card-content>
+        <div class="empty-state">
+          <ion-icon name="notifications-off-outline" size="large" color="medium"></ion-icon>
+          <p>No tienes notificaciones</p>
+        </div>
+      </ion-card-content>
+    </ion-card>
+  </div>
+</ion-content>

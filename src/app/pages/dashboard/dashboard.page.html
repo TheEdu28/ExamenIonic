@@ -1,7 +1,12 @@
+<!-- src/app/pages/dashboard/dashboard.page.html -->
 <ion-header>
-  <ion-toolbar>
+  <ion-toolbar color="primary">
     <ion-title>Panel de Control</ion-title>
     <ion-buttons slot="end">
+      <ion-button (click)="viewNotifications()">
+        <ion-icon name="notifications-outline"></ion-icon>
+        <ion-badge color="danger" *ngIf="notificationCount > 0">{{notificationCount}}</ion-badge>
+      </ion-button>
       <ion-button (click)="logout()">
         <ion-icon name="log-out-outline"></ion-icon>
       </ion-button>
@@ -11,31 +16,37 @@
 
 <ion-content>
   <div class="ion-padding">
-    <ion-card>
-      <ion-card-header>
-        <ion-card-title>Bienvenido, {{userName}}</ion-card-title>
-        <ion-card-subtitle>Resumen de Mantenimientos</ion-card-subtitle>
-      </ion-card-header>
-
+    <!-- Sección de bienvenida -->
+    <ion-card class="welcome-card">
       <ion-card-content>
-        <ion-list>
-          <ion-item>
-            <ion-label>
-              <h2>Próximos Mantenimientos</h2>
-              <p>{{upcomingCount}} tareas pendientes</p>
-            </ion-label>
-          </ion-item>
-
-          <ion-item>
-            <ion-label>
-              <h2>Alertas Activas</h2>
-              <p>{{alertsCount}} alertas de vencimiento</p>
-            </ion-label>
-          </ion-item>
-        </ion-list>
+        <h1 class="welcome-title">¡Hola, {{userName}}!</h1>
+        <p class="welcome-subtitle">Gestiona tus mantenimientos de forma sencilla</p>
       </ion-card-content>
     </ion-card>
 
+    <!-- Resumen rápido -->
+    <ion-grid class="summary-grid">
+      <ion-row>
+        <ion-col size="6">
+          <ion-card class="stat-card">
+            <ion-card-content>
+              <div class="stat-number">{{upcomingCount}}</div>
+              <div class="stat-label">Próximos</div>
+            </ion-card-content>
+          </ion-card>
+        </ion-col>
+        <ion-col size="6">
+          <ion-card class="stat-card">
+            <ion-card-content>
+              <div class="stat-number">{{alertsCount}}</div>
+              <div class="stat-label">Alertas</div>
+            </ion-card-content>
+          </ion-card>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+
+    <!-- Categorías principales -->
     <ion-card>
       <ion-card-header>
         <ion-card-title>Categorías</ion-card-title>
@@ -44,44 +55,49 @@
       <ion-card-content>
         <ion-grid>
           <ion-row>
-            <ion-col size="6">
-              <ion-button expand="block" (click)="navigateTo('/house-maintenance')">
-                <ion-icon slot="start" name="home-outline"></ion-icon>
-                Casa
+            <ion-col size="6" size-md="3">
+              <ion-button expand="block" fill="outline" (click)="navigateTo('/house-maintenance')" class="category-btn">
+                <div class="btn-content">
+                  <ion-icon name="home-outline" size="large"></ion-icon>
+                  <span>Casa</span>
+                </div>
               </ion-button>
             </ion-col>
-            <ion-col size="6">
-              <ion-button expand="block" (click)="navigateTo('/vehicle-maintenance')">
-                <ion-icon slot="start" name="car-outline"></ion-icon>
-                Vehículos
+            <ion-col size="6" size-md="3">
+              <ion-button expand="block" fill="outline" (click)="navigateTo('/vehicle-maintenance')" class="category-btn">
+                <div class="btn-content">
+                  <ion-icon name="car-outline" size="large"></ion-icon>
+                  <span>Vehículos</span>
+                </div>
+              </ion-button>
+            </ion-col>
+            <ion-col size="6" size-md="3">
+              <ion-button expand="block" fill="outline" (click)="navigateTo('/health-maintenance')" class="category-btn">
+                <div class="btn-content">
+                  <ion-icon name="fitness-outline" size="large"></ion-icon>
+                  <span>Salud</span>
+                </div>
+              </ion-button>
+            </ion-col>
+            <ion-col size="6" size-md="3">
+              <ion-button expand="block" fill="outline" (click)="navigateTo('/pet-maintenance')" class="category-btn">
+                <div class="btn-content">
+                  <ion-icon name="paw-outline" size="large"></ion-icon>
+                  <span>Mascotas</span>
+                </div>
               </ion-button>
             </ion-col>
           </ion-row>
 
-          <ion-row>
+          <ion-row class="ion-margin-top">
             <ion-col size="6">
-              <ion-button expand="block" (click)="navigateTo('/health-maintenance')">
-                <ion-icon slot="start" name="fitness-outline"></ion-icon>
-                Salud
-              </ion-button>
-            </ion-col>
-            <ion-col size="6">
-              <ion-button expand="block" (click)="navigateTo('/pet-maintenance')">
-                <ion-icon slot="start" name="paw-outline"></ion-icon>
-                Mascotas
-              </ion-button>
-            </ion-col>
-          </ion-row>
-
-          <ion-row>
-            <ion-col size="6">
-              <ion-button expand="block" (click)="navigateTo('/reports')">
+              <ion-button expand="block" fill="clear" (click)="navigateTo('/reports')">
                 <ion-icon slot="start" name="bar-chart-outline"></ion-icon>
                 Informes
               </ion-button>
             </ion-col>
             <ion-col size="6">
-              <ion-button expand="block" (click)="navigateTo('/settings')">
+              <ion-button expand="block" fill="clear" (click)="navigateTo('/settings')">
                 <ion-icon slot="start" name="settings-outline"></ion-icon>
                 Configuración
               </ion-button>
@@ -91,6 +107,7 @@
       </ion-card-content>
     </ion-card>
 
+    <!-- Próximas tareas -->
     <ion-card *ngIf="upcomingMaintenances.length > 0">
       <ion-card-header>
         <ion-card-title>Próximas Tareas</ion-card-title>
@@ -98,14 +115,26 @@
 
       <ion-card-content>
         <ion-list>
-          <ion-item *ngFor="let item of upcomingMaintenances">
+          <ion-item *ngFor="let item of upcomingMaintenances" lines="full">
             <ion-label>
               <h3>{{item.title}}</h3>
               <p>{{item.date | date:'short'}}</p>
-              <p>{{item.category}}</p>
             </ion-label>
+            <ion-chip slot="end" [color]="getCategoryColor(item.category)">
+              {{item.category}}
+            </ion-chip>
           </ion-item>
         </ion-list>
+      </ion-card-content>
+    </ion-card>
+
+    <!-- Mensaje cuando no hay tareas -->
+    <ion-card *ngIf="upcomingMaintenances.length === 0">
+      <ion-card-content>
+        <div class="empty-state">
+          <ion-icon name="checkmark-circle-outline" size="large" color="success"></ion-icon>
+          <p>¡Todo al día! No hay mantenimientos pendientes próximos.</p>
+        </div>
       </ion-card-content>
     </ion-card>
   </div>

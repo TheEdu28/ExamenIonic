@@ -1,11 +1,13 @@
+// src/app/pages/dashboard/dashboard.page.ts
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { IonicModule } from '@ionic/angular';
 import { Router } from '@angular/router';
 import { AuthService } from '../../services/auth.service';
+import { NotificationService } from '../../services/notification.service';
 import { addIcons } from 'ionicons';
-import { logOutOutline, homeOutline, carOutline, fitnessOutline, pawOutline, barChartOutline, settingsOutline } from 'ionicons/icons';
+import { logOutOutline, homeOutline, carOutline, fitnessOutline, pawOutline, barChartOutline, settingsOutline, notificationsOutline } from 'ionicons/icons';
 import { HouseMaintenanceService } from '../../services/house-maintenance.service';
 import { VehicleMaintenanceService } from '../../services/vehicle-maintenance.service';
 import { PetMaintenanceService } from '../../services/pet-maintenance.service';
@@ -27,6 +29,7 @@ export class DashboardPage implements OnInit {
   userName: string = '';
   upcomingCount: number = 0;
   alertsCount: number = 0;
+  notificationCount: number = 0;
   upcomingMaintenances: UpcomingItem[] = [];
 
   constructor(
@@ -34,9 +37,19 @@ export class DashboardPage implements OnInit {
     private houseService: HouseMaintenanceService,
     private vehicleService: VehicleMaintenanceService,
     private petService: PetMaintenanceService,
+    private notificationService: NotificationService,
     private router: Router
   ) {
-    addIcons({ logOutOutline, homeOutline, carOutline, fitnessOutline, pawOutline, barChartOutline, settingsOutline });
+    addIcons({ 
+      logOutOutline, 
+      homeOutline, 
+      carOutline, 
+      fitnessOutline, 
+      pawOutline, 
+      barChartOutline, 
+      settingsOutline,
+      notificationsOutline 
+    });
   }
 
   async ngOnInit() {
@@ -49,7 +62,15 @@ export class DashboardPage implements OnInit {
     await this.loadDashboardData();
   }
 
+  async ionViewWillEnter() {
+    await this.loadDashboardData();
+  }
+
   async loadDashboardData() {
+    // Check and generate notifications
+    await this.notificationService.checkUpcomingMaintenances();
+    this.notificationCount = await this.notificationService.getUnreadCount();
+
     const houseMaintenances = await this.houseService.getUpcoming();
     const vehicleMaintenances = await this.vehicleService.getUpcoming();
     const insuranceAlerts = await this.vehicleService.getInsuranceAlerts();
@@ -85,8 +106,22 @@ export class DashboardPage implements OnInit {
     this.router.navigate([path]);
   }
 
+  viewNotifications() {
+    this.router.navigate(['/notifications']);
+  }
+
   async logout() {
     await this.authService.logout();
     this.router.navigate(['/login']);
+  }
+
+  getCategoryColor(category: string): string {
+    const colors: { [key: string]: string } = {
+      'Casa': 'primary',
+      'Vehículo': 'secondary',
+      'Salud': 'success',
+      'Mascotas': 'warning'
+    };
+    return colors[category] || 'medium';
   }
 }

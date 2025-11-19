@@ -1,11 +1,14 @@
+// src/app/pages/settings/settings.page.ts
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { IonicModule, AlertController } from '@ionic/angular';
 import { addIcons } from 'ionicons';
-import { downloadOutline, cloudUploadOutline, trashOutline } from 'ionicons/icons';
+import { downloadOutline, cloudUploadOutline, trashOutline, syncOutline, cloudDoneOutline } from 'ionicons/icons';
 import { AuthService } from '../../services/auth.service';
 import { StorageService } from '../../services/storage.service';
+import { NotificationService } from '../../services/notification.service';
+import { SyncService } from '../../services/sync.service';
 
 @Component({
   selector: 'app-settings',
@@ -19,20 +22,40 @@ export class SettingsPage implements OnInit {
   userEmail: string = '';
   notificationsEnabled: boolean = true;
   dailyReminders: boolean = true;
+  lastSyncDate: Date | null = null;
 
   constructor(
     private authService: AuthService,
     private storageService: StorageService,
+    private notificationService: NotificationService,
+    private syncService: SyncService,
     private alertController: AlertController
   ) {
-    addIcons({ downloadOutline, cloudUploadOutline, trashOutline });
+    addIcons({ 
+      downloadOutline, 
+      cloudUploadOutline, 
+      trashOutline,
+      syncOutline,
+      cloudDoneOutline
+    });
   }
 
-  ngOnInit() {
+  async ngOnInit() {
     const user = this.authService.getCurrentUser();
     if (user) {
       this.userName = user.name;
       this.userEmail = user.email;
+    }
+    
+    this.notificationsEnabled = this.notificationService.isNotificationsEnabled();
+    this.lastSyncDate = await this.syncService.getLastSyncDate();
+  }
+
+  async onNotificationsToggle() {
+    await this.notificationService.setNotificationsEnabled(this.notificationsEnabled);
+    
+    if (this.notificationsEnabled) {
+      await this.notificationService.checkUpcomingMaintenances();
     }
   }
 
@@ -75,14 +98,19 @@ export class SettingsPage implements OnInit {
           await this.storageService.importData(event.target.result);
           const alert = await this.alertController.create({
             header: 'Éxito',
-            message: 'Datos importados correctamente',
-            buttons: ['OK']
+            message: 'Datos importados correctamente. La aplicación se recargará.',
+            buttons: [{
+              text: 'OK',
+              handler: () => {
+                window.location.reload();
+              }
+            }]
           });
           await alert.present();
         } catch (error) {
           const alert = await this.alertController.create({
             header: 'Error',
-            message: 'Error al importar los datos',
+            message: 'Error al importar los datos. Verifica que el archivo sea válido.',
             buttons: ['OK']
           });
           await alert.present();
@@ -91,6 +119,37 @@ export class SettingsPage implements OnInit {
       reader.readAsText(file);
     };
     input.click();
+  }
+
+  async syncToCloud() {
+    const success = await this.syncService.syncToCloud();
+    if (success) {
+      this.lastSyncDate = await this.syncService.getLastSyncDate();
+    }
+  }
+
+  async restoreFromCloud() {
+    const alert = await this.alertController.create({
+      header: 'Restaurar desde la Nube',
+      message: 'Esto reemplazará todos tus datos actuales. ¿Deseas continuar?',
+      buttons: [
+        {
+          text: 'Cancelar',
+          role: 'cancel'
+        },
+        {
+          text: 'Restaurar',
+          handler: async () => {
+            const success = await this.syncService.restoreFromCloud();
+            if (success) {
+              window.location.reload();
+            }
+          }
+        }
+      ]
+    });
+
+    await alert.present();
   }
 
   async clearAllData() {
@@ -110,7 +169,12 @@ export class SettingsPage implements OnInit {
             const confirmAlert = await this.alertController.create({
               header: 'Éxito',
               message: 'Todos los datos han sido borrados',
-              buttons: ['OK']
+              buttons: [{
+                text: 'OK',
+                handler: () => {
+                  window.location.reload();
+                }
+              }]
             });
             await confirmAlert.present();
           }

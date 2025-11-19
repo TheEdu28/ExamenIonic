@@ -1,0 +1,189 @@
+// src/app/styles/custom.scss
+// Archivo de estilos personalizados para la aplicación
+
+// Variables personalizadas
+:root {
+  --app-padding: 16px;
+  --app-border-radius: 12px;
+  --app-card-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+// Estilos generales para cards
+ion-card {
+  border-radius: var(--app-border-radius);
+  box-shadow: var(--app-card-shadow);
+  margin: 0.5rem 0;
+
+  ion-card-header {
+    padding: 1rem;
+
+    ion-card-title {
+      font-size: 1.2rem;
+      font-weight: 600;
+    }
+
+    ion-card-subtitle {
+      margin-top: 0.25rem;
+      font-size: 0.9rem;
+      opacity: 0.7;
+    }
+  }
+
+  ion-card-content {
+    padding: 1rem;
+  }
+}
+
+// Estilos para botones
+ion-button {
+  --border-radius: 8px;
+  text-transform: none;
+  font-weight: 500;
+
+  &.category-btn {
+    --padding-top: 1rem;
+    --padding-bottom: 1rem;
+  }
+}
+
+// Estilos para formularios
+ion-item {
+  --border-radius: 8px;
+  --padding-start: 12px;
+  --padding-end: 12px;
+  --inner-padding-end: 0;
+  margin: 0.5rem 0;
+
+  ion-label {
+    margin-bottom: 8px;
+
+    &[position="floating"] {
+      transform: translateY(0) scale(0.85);
+    }
+  }
+
+  ion-input,
+  ion-textarea,
+  ion-select {
+    --padding-start: 12px;
+    --padding-end: 12px;
+  }
+
+  &.item-has-focus {
+    --highlight-background: var(--ion-color-primary);
+  }
+}
+
+// Estilos para listas
+ion-list {
+  padding: 0;
+  background: transparent;
+
+  ion-item {
+    --background: var(--ion-card-background, #fff);
+    margin: 0.25rem 0;
+  }
+
+  ion-item-sliding {
+    margin: 0.25rem 0;
+  }
+}
+
+// Estilos para chips
+ion-chip {
+  --background: var(--ion-color-light);
+  font-size: 0.75rem;
+  height: 26px;
+  border-radius: 13px;
+}
+
+// Estilos para badges
+ion-badge {
+  --padding-start: 6px;
+  --padding-end: 6px;
+  font-size: 0.75rem;
+  border-radius: 10px;
+}
+
+// Estilos para toolbars
+ion-toolbar {
+  --padding-start: 8px;
+  --padding-end: 8px;
+
+  ion-title {
+    font-size: 1.2rem;
+    font-weight: 600;
+  }
+}
+
+// Estilos para el contenido
+ion-content {
+  --background: var(--ion-background-color, #f5f5f5);
+}
+
+// Utilidades
+.ion-text-wrap {
+  white-space: normal !important;
+}
+
+.empty-state {
+  text-align: center;
+  padding: 2rem 1rem;
+
+  ion-icon {
+    font-size: 4rem;
+    opacity: 0.5;
+    margin-bottom: 1rem;
+  }
+
+  p {
+    color: var(--ion-color-medium);
+    margin: 0;
+  }
+}
+
+.stat-card {
+  text-align: center;
+
+  .stat-number {
+    font-size: 2rem;
+    font-weight: bold;
+    color: var(--ion-color-primary);
+  }
+
+  .stat-label {
+    font-size: 0.9rem;
+    color: var(--ion-color-medium);
+    margin-top: 0.25rem;
+  }
+}
+
+// Animaciones suaves
+ion-card,
+ion-button,
+ion-item {
+  transition: all 0.3s ease;
+}
+
+ion-button:active {
+  transform: scale(0.98);
+}
+
+// Modo oscuro personalizado
+@media (prefers-color-scheme: dark) {
+  :root {
+    --app-card-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+  }
+
+  ion-content {
+    --background: #121212;
+  }
+
+  ion-card {
+    --background: #1e1e1e;
+  }
+
+  ion-item {
+    --background: #1e1e1e;
+  }
+}
