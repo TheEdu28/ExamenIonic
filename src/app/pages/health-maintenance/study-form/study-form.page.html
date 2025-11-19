@@ -17,7 +17,7 @@
 
       <ion-item>
         <ion-label position="floating">Fecha de Realización</ion-label>
-        <ion-datetime-button datetime="datePerformed"></ion-datetime-button>
+        <ion-datetime-button datetime="datePerformed" id="datePerfomedBtn"></ion-datetime-button>
         <ion-modal [keepContentsMounted]="true">
           <ng-template>
             <ion-datetime 
@@ -37,7 +37,7 @@
 
       <ion-item>
         <ion-label position="floating">Próxima Cita (opcional)</ion-label>
-        <ion-datetime-button datetime="nextAppointment"></ion-datetime-button>
+        <ion-datetime-button datetime="nextAppointment" id="nextAppointmentBtn"></ion-datetime-button>
         <ion-modal [keepContentsMounted]="true">
           <ng-template>
             <ion-datetime 

@@ -22,7 +22,7 @@
 
       <ion-item>
         <ion-label position="floating">Fecha de Mantenimiento</ion-label>
-        <ion-datetime-button datetime="maintenanceDate"></ion-datetime-button>
+        <ion-datetime-button datetime="maintenanceDate" id="maintenanceDateBtn"></ion-datetime-button>
         <ion-modal [keepContentsMounted]="true">
           <ng-template>
             <ion-datetime 
@@ -37,7 +37,7 @@
 
       <ion-item>
         <ion-label position="floating">Próxima Fecha (opcional)</ion-label>
-        <ion-datetime-button datetime="nextMaintenanceDate"></ion-datetime-button>
+        <ion-datetime-button datetime="nextMaintenanceDate" id="nextMaintenanceDateBtn"></ion-datetime-button>
         <ion-modal [keepContentsMounted]="true">
           <ng-template>
             <ion-datetime 
@@ -80,7 +80,7 @@
 
       <ion-item>
         <ion-label position="floating">Vencimiento Seguro (opcional)</ion-label>
-        <ion-datetime-button datetime="insuranceExpiryDate"></ion-datetime-button>
+        <ion-datetime-button datetime="insuranceExpiryDate" id="insuranceExpiryDateBtn"></ion-datetime-button>
         <ion-modal [keepContentsMounted]="true">
           <ng-template>
             <ion-datetime 
@@ -95,7 +95,7 @@
 
       <ion-item>
         <ion-label position="floating">Revisión Técnica (opcional)</ion-label>
-        <ion-datetime-button datetime="technicalInspectionDate"></ion-datetime-button>
+        <ion-datetime-button datetime="technicalInspectionDate" id="technicalInspectionDateBtn"></ion-datetime-button>
         <ion-modal [keepContentsMounted]="true">
           <ng-template>
             <ion-datetime 

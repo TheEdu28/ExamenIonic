@@ -1,0 +1,28 @@
+#datePerfomedBtn {
+    margin: 10px 0;
+}
+
+ #nextAppointmentBtn{
+    margin: 22px 0 10px;
+ }
+
+ion-input, ion-datetime-button, ion-select, ion-textarea  {
+    margin-top: 0.3rem;
+}
+
+ion-label {
+    font-weight: bold;
+    font-size: medium;
+}
+
+input [type="file"] {
+    margin-top: 0.3 rem;
+    margin-bottom: 0.3 rem;
+}
+
+ion-content {
+    --padding-top: 10px;
+    --padding-bottom: 10px;
+    --padding-start: 15px;
+    --padding-end: 15px;
+}

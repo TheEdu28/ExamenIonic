@@ -27,7 +27,7 @@
 
         <ion-item>
           <ion-label position="floating">Fecha Desde</ion-label>
-          <ion-datetime-button datetime="fromDate"></ion-datetime-button>
+          <ion-datetime-button datetime="fromDate" id="fromDateBtn"></ion-datetime-button>
           <ion-modal [keepContentsMounted]="true">
             <ng-template>
               <ion-datetime 
@@ -41,7 +41,7 @@
 
         <ion-item>
           <ion-label position="floating">Fecha Hasta</ion-label>
-          <ion-datetime-button datetime="toDate"></ion-datetime-button>
+          <ion-datetime-button datetime="toDate" id="toDateBtn"></ion-datetime-button>
           <ion-modal [keepContentsMounted]="true">
             <ng-template>
               <ion-datetime 

@@ -1,0 +1,18 @@
+#startDateBtn, #expiryDateBtn {
+    margin: 10px 0;
+}
+
+ion-input, ion-datetime-button, ion-select, ion-textarea  {
+    margin-top: 0.3rem;
+}
+input [type="file"] {
+    margin-top: 0.3 rem;
+    margin-bottom: 0.3 rem;
+}
+
+ion-content {
+    --padding-top: 10px;
+    --padding-bottom: 10px;
+    --padding-start: 15px;
+    --padding-end: 15px;
+}
